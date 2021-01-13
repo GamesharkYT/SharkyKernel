@@ -53,6 +53,8 @@
 #ifdef CONFIG_DRM
 #include <drm/drm_notifier.h>
 #endif
+#include <linux/backlight.h>
+#include <linux/cpu.h>
 
 #include <linux/fb.h>
 #include <linux/proc_fs.h>
@@ -4025,9 +4027,9 @@ static int fts_drm_state_chg_callback(struct notifier_block *nb,
 			if (info->sensor_sleep)
 				return NOTIFY_OK;
 
-			logError(1, "%s %s: FB_BLANK_POWERDOWN\n", tag,
-				 __func__);
+			logError(1, "%s %s: FB_BLANK_POWERDOWN\n", tag, __func__);
 
+			irq_set_affinity(info->client->irq, cpumask_of(0));
 			queue_work(info->event_wq, &info->suspend_work);
 		} else if (val == DRM_EVENT_BLANK && blank == DRM_BLANK_UNBLANK) {
 			if (!info->sensor_sleep)
@@ -4036,6 +4038,7 @@ static int fts_drm_state_chg_callback(struct notifier_block *nb,
 			logError(1, "%s %s: FB_BLANK_UNBLANK\n", tag,
 				 __func__);
 
+			irq_set_affinity(info->client->irq, cpu_perf_mask);
 			queue_work(info->event_wq, &info->resume_work);
 		}
 	}

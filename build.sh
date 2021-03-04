@@ -89,5 +89,7 @@ else
   rm -rf $ANYKERNEL3_DIR/$FINAL_KERNEL_ZIP
   rm -rf $ANYKERNEL3_DIR/Image.gz-dtb
   rm -rf out/
-  echo -e "$red mission failed we'll get em next time $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds.$nocol"
+  BUILD_END=$(date +"%s")
+  DIFF=$(($BUILD_END - $BUILD_START))
+  echo -e "$red mission failed we'll get em next time, Build failed in:- $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds.$nocol"
 fi

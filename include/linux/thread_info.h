@@ -33,9 +33,7 @@
 static inline long set_restart_fn(struct restart_block *restart,
 					long (*fn)(struct restart_block *))
 {
-	restart->fn = fn;
-	arch_set_restart_data(restart);
-	return -ERESTART_RESTARTBLOCK;
+	return 0;
 }
 
 #define THREADINFO_GFP	(GFP_KERNEL_ACCOUNT | __GFP_NOTRACK | __GFP_ZERO)
